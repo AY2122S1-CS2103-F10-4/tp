@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import seedu.siasa.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.siasa.logic.commands.client.EditClientCommand.EditPersonDescriptor;
 import seedu.siasa.model.person.Address;
 import seedu.siasa.model.person.Email;
 import seedu.siasa.model.person.Name;

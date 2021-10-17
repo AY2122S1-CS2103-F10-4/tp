@@ -9,7 +9,7 @@ import static seedu.siasa.logic.parser.CliSyntax.PREFIX_TAG;
 import java.util.Set;
 
 import seedu.siasa.logic.commands.AddCommand;
-import seedu.siasa.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.siasa.logic.commands.client.EditClientCommand.EditPersonDescriptor;
 import seedu.siasa.model.person.Person;
 import seedu.siasa.model.tag.Tag;
 

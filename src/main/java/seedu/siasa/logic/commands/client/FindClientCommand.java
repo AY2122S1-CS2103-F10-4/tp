@@ -1,8 +1,10 @@
-package seedu.siasa.logic.commands;
+package seedu.siasa.logic.commands.client;
 
 import static java.util.Objects.requireNonNull;
 
 import seedu.siasa.commons.core.Messages;
+import seedu.siasa.logic.commands.Command;
+import seedu.siasa.logic.commands.CommandResult;
 import seedu.siasa.model.Model;
 import seedu.siasa.model.person.NameContainsKeywordsPredicate;
 
@@ -10,7 +12,7 @@ import seedu.siasa.model.person.NameContainsKeywordsPredicate;
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
-public class FindCommand extends Command {
+public class FindClientCommand extends Command {
 
     public static final String COMMAND_WORD = "findclient";
 
@@ -21,7 +23,7 @@ public class FindCommand extends Command {
 
     private final NameContainsKeywordsPredicate predicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
+    public FindClientCommand(NameContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
 
@@ -36,7 +38,7 @@ public class FindCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof FindCommand // instanceof handles nulls
-                && predicate.equals(((FindCommand) other).predicate)); // state check
+                || (other instanceof FindClientCommand // instanceof handles nulls
+                && predicate.equals(((FindClientCommand) other).predicate)); // state check
     }
 }

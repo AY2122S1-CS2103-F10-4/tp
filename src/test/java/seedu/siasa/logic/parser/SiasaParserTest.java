@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.siasa.logic.commands.ClearCommand;
-import seedu.siasa.logic.commands.EditCommand;
-import seedu.siasa.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.siasa.logic.commands.client.EditClientCommand;
+import seedu.siasa.logic.commands.client.EditClientCommand.EditPersonDescriptor;
 import seedu.siasa.logic.commands.ExitCommand;
-import seedu.siasa.logic.commands.FindCommand;
+import seedu.siasa.logic.commands.client.FindClientCommand;
 import seedu.siasa.logic.commands.HelpCommand;
 import seedu.siasa.logic.parser.exceptions.ParseException;
 import seedu.siasa.model.person.NameContainsKeywordsPredicate;
@@ -58,9 +58,9 @@ public class SiasaParserTest {
     public void parseCommand_edit() throws Exception {
         Person person = new PersonBuilder().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
-        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+        EditClientCommand command = (EditClientCommand) parser.parseCommand(EditClientCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
-        assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
+        assertEquals(new EditClientCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
     @Test
@@ -72,9 +72,9 @@ public class SiasaParserTest {
     @Test
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
+        FindClientCommand command = (FindClientCommand) parser.parseCommand(
+                FindClientCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindClientCommand(new NameContainsKeywordsPredicate(keywords)), command);
     }
 
     /*

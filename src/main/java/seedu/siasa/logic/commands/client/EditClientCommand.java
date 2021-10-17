@@ -1,4 +1,4 @@
-package seedu.siasa.logic.commands;
+package seedu.siasa.logic.commands.client;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_ADDRESS;
@@ -17,6 +17,8 @@ import java.util.Set;
 import seedu.siasa.commons.core.Messages;
 import seedu.siasa.commons.core.index.Index;
 import seedu.siasa.commons.util.CollectionUtil;
+import seedu.siasa.logic.commands.Command;
+import seedu.siasa.logic.commands.CommandResult;
 import seedu.siasa.logic.commands.exceptions.CommandException;
 import seedu.siasa.model.Model;
 import seedu.siasa.model.person.Address;
@@ -29,7 +31,7 @@ import seedu.siasa.model.tag.Tag;
 /**
  * Edits the details of an existing person in the address book.
  */
-public class EditCommand extends Command {
+public class EditClientCommand extends Command {
 
     public static final String COMMAND_WORD = "editclient";
 
@@ -57,7 +59,7 @@ public class EditCommand extends Command {
      * @param index of the person in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
      */
-    public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
+    public EditClientCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(index);
         requireNonNull(editPersonDescriptor);
 
@@ -110,12 +112,12 @@ public class EditCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof EditCommand)) {
+        if (!(other instanceof EditClientCommand)) {
             return false;
         }
 
         // state check
-        EditCommand e = (EditCommand) other;
+        EditClientCommand e = (EditClientCommand) other;
         return index.equals(e.index)
                 && editPersonDescriptor.equals(e.editPersonDescriptor);
     }

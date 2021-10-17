@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 import seedu.siasa.logic.commands.ClearCommand;
 import seedu.siasa.logic.commands.Command;
-import seedu.siasa.logic.commands.EditCommand;
+import seedu.siasa.logic.commands.client.EditClientCommand;
 import seedu.siasa.logic.commands.ExitCommand;
-import seedu.siasa.logic.commands.FindCommand;
+import seedu.siasa.logic.commands.client.FindClientCommand;
 import seedu.siasa.logic.commands.HelpCommand;
 import seedu.siasa.logic.commands.client.AddClientCommand;
 import seedu.siasa.logic.commands.client.ClearClientPolicyCommand;
@@ -61,7 +61,7 @@ public class SiasaParser {
         case AddPolicyCommand.COMMAND_WORD:
             return new AddPolicyCommandParser().parse(arguments);
 
-        case EditCommand.COMMAND_WORD:
+        case EditClientCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
         case DeleteClientCommand.COMMAND_WORD:
@@ -76,7 +76,7 @@ public class SiasaParser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD:
+        case FindClientCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
         case ListClientPolicyCommand.COMMAND_WORD:

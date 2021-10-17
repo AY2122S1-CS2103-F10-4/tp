@@ -12,7 +12,7 @@ import static seedu.siasa.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.siasa.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.siasa.logic.commands.client.EditClientCommand.EditPersonDescriptor;
 import seedu.siasa.testutil.EditPersonDescriptorBuilder;
 
 public class EditPersonDescriptorTest {
