@@ -169,4 +169,9 @@ public interface Model {
      * @throws NullPointerException if {@code comparator} is null.
      */
     void updateFilteredPolicyList(Comparator<Policy> predicate);
+
+    /**
+     * Gets the current {@code predicate} applied to the Policy list.
+     */
+    Predicate<Policy> getCurrentPolicyPredicate();
 }
