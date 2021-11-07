@@ -208,6 +208,13 @@ public class ModelManager implements Model {
         sortedContacts.setComparator(comparator);
     }
 
+    @Override
+    public Predicate<Policy> getCurrentPolicyPredicate() {
+        @SuppressWarnings("unchecked")
+        Predicate<Policy> result = (Predicate<Policy>) filteredPolicies.getPredicate();
+        return result;
+    }
+
     //=========== Filtered Policy List Accessors =============================================================
 
     /**

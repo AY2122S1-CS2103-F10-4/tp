@@ -7,7 +7,6 @@ import static seedu.siasa.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.siasa.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
-import static seedu.siasa.model.Model.PREDICATE_SHOW_ALL_POLICIES;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javafx.util.Pair;
 import seedu.siasa.commons.core.Messages;
@@ -92,6 +92,7 @@ public class EditContactCommand extends Command {
 
         // Update all the associated policies
         ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
+        Predicate<Policy> currentPredicate = model.getCurrentPolicyPredicate();
         model.updateFilteredPolicyList(new PolicyIsOwnedByPredicate(contactToEdit));
         List<Policy> contactPolicies = model.getFilteredPolicyList();
 
@@ -107,7 +108,7 @@ public class EditContactCommand extends Command {
 
         model.setContact(contactToEdit, editedContact);
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
-        model.updateFilteredPolicyList(PREDICATE_SHOW_ALL_POLICIES);
+        model.updateFilteredPolicyList(currentPredicate);
         return new CommandResult(String.format(MESSAGE_EDIT_CONTACT_SUCCESS, editedContact));
     }
 

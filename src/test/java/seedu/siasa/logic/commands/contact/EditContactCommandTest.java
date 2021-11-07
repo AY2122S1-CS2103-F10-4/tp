@@ -40,6 +40,9 @@ public class EditContactCommandTest {
 
     private Model model = new ModelManager(getTypicalSiasa(), new UserPrefs());
 
+    /**
+     * Helper method that returns a new `Policy` with reference to the provided `Contact`
+     */
     private static Policy newPolicyWtihNewOwner(Policy policy, Contact owner) {
         return new Policy(
                 policy.getTitle(),
@@ -48,6 +51,22 @@ public class EditContactCommandTest {
                 policy.getCommission(),
                 owner,
                 policy.getTags());
+    }
+
+    /**
+     * Helper method that updates all `Policy`s that were owned by `contactToEdit` to be owned by `editedContact`
+     */
+    private static void updateModelAfterContactChange(Model model, Contact contactToEdit, Contact editedContact) {
+        List<Policy> policyList = model.getFilteredPolicyList();
+        ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
+        for (Policy p : policyList) {
+            if (p.getOwner().equals(contactToEdit)) {
+                policiesToBeUpdated.add(new Pair<>(p, newPolicyWtihNewOwner(p, editedContact)));
+            }
+        }
+        for (Pair<Policy, Policy> pair : policiesToBeUpdated) {
+            model.setPolicy(pair.getKey(), pair.getValue());
+        }
     }
 
     @Test
@@ -60,17 +79,7 @@ public class EditContactCommandTest {
 
         Model expectedModel = new ModelManager(new Siasa(model.getSiasa()), new UserPrefs());
 
-        // Update contact policies
-        List<Policy> policyList = expectedModel.getFilteredPolicyList();
-        ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
-        for (Policy p : policyList) {
-            if (p.getOwner().equals(expectedModel.getFilteredContactList().get(0))) {
-                policiesToBeUpdated.add(new Pair<>(p, newPolicyWtihNewOwner(p, editedContact)));
-            }
-        }
-        for (Pair<Policy, Policy> pair : policiesToBeUpdated) {
-            expectedModel.setPolicy(pair.getKey(), pair.getValue());
-        }
+        updateModelAfterContactChange(expectedModel, model.getFilteredContactList().get(0), editedContact);
 
         expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
 
@@ -124,17 +133,7 @@ public class EditContactCommandTest {
 
         Model expectedModel = new ModelManager(new Siasa(model.getSiasa()), new UserPrefs());
 
-        // Update contact policies
-        List<Policy> policyList = expectedModel.getFilteredPolicyList();
-        ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
-        for (Policy p : policyList) {
-            if (p.getOwner().equals(expectedModel.getFilteredContactList().get(0))) {
-                policiesToBeUpdated.add(new Pair<>(p, newPolicyWtihNewOwner(p, editedContact)));
-            }
-        }
-        for (Pair<Policy, Policy> pair : policiesToBeUpdated) {
-            expectedModel.setPolicy(pair.getKey(), pair.getValue());
-        }
+        updateModelAfterContactChange(expectedModel, model.getFilteredContactList().get(0), editedContact);
 
         expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
 
