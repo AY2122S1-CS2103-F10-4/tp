@@ -92,12 +92,13 @@ public class EditContactCommand extends Command {
 
         // Update all the associated policies
         ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
-        model.updateFilteredPolicyList(new PolicyIsOwnedByPredicate(contactToEdit));
         List<Policy> contactPolicies = model.getFilteredPolicyList();
 
         // Create list of policies to be updated
         for (Policy policy : contactPolicies) {
-            policiesToBeUpdated.add(new Pair<>(policy, newPolicyWtihNewOwner(policy, editedContact)));
+            if (policy.getOwner().equals(contactToEdit)) {
+                policiesToBeUpdated.add(new Pair<>(policy, newPolicyWtihNewOwner(policy, editedContact)));
+            }
         }
 
         // Update all policies in the list
@@ -107,7 +108,6 @@ public class EditContactCommand extends Command {
 
         model.setContact(contactToEdit, editedContact);
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
-        model.updateFilteredPolicyList(PREDICATE_SHOW_ALL_POLICIES);
         return new CommandResult(String.format(MESSAGE_EDIT_CONTACT_SUCCESS, editedContact));
     }
 
