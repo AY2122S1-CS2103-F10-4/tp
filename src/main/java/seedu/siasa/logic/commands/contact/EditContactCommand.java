@@ -7,7 +7,6 @@ import static seedu.siasa.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.siasa.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
-import static seedu.siasa.model.Model.PREDICATE_SHOW_ALL_POLICIES;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,6 @@ import seedu.siasa.model.contact.Email;
 import seedu.siasa.model.contact.Name;
 import seedu.siasa.model.contact.Phone;
 import seedu.siasa.model.policy.Policy;
-import seedu.siasa.model.policy.PolicyIsOwnedByPredicate;
 import seedu.siasa.model.tag.Tag;
 
 /**
