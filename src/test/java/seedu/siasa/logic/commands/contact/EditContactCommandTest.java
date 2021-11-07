@@ -14,8 +14,12 @@ import static seedu.siasa.testutil.TypicalIndexes.INDEX_FIRST_CONTACT;
 import static seedu.siasa.testutil.TypicalIndexes.INDEX_SECOND_CONTACT;
 import static seedu.siasa.testutil.TypicalSiasa.getTypicalSiasa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
+import javafx.util.Pair;
 import seedu.siasa.commons.core.Messages;
 import seedu.siasa.commons.core.index.Index;
 import seedu.siasa.logic.commands.ClearCommand;
@@ -25,6 +29,7 @@ import seedu.siasa.model.ModelManager;
 import seedu.siasa.model.Siasa;
 import seedu.siasa.model.UserPrefs;
 import seedu.siasa.model.contact.Contact;
+import seedu.siasa.model.policy.Policy;
 import seedu.siasa.testutil.ContactBuilder;
 import seedu.siasa.testutil.EditContactDescriptorBuilder;
 
@@ -35,6 +40,16 @@ public class EditContactCommandTest {
 
     private Model model = new ModelManager(getTypicalSiasa(), new UserPrefs());
 
+    private static Policy newPolicyWtihNewOwner(Policy policy, Contact owner) {
+        return new Policy(
+                policy.getTitle(),
+                policy.getPaymentStructure(),
+                policy.getCoverageExpiryDate().orElse(null),
+                policy.getCommission(),
+                owner,
+                policy.getTags());
+    }
+
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Contact editedContact = new ContactBuilder().build();
@@ -44,6 +59,19 @@ public class EditContactCommandTest {
         String expectedMessage = String.format(EditContactCommand.MESSAGE_EDIT_CONTACT_SUCCESS, editedContact);
 
         Model expectedModel = new ModelManager(new Siasa(model.getSiasa()), new UserPrefs());
+
+        // Update contact policies
+        List<Policy> policyList = expectedModel.getFilteredPolicyList();
+        ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
+        for (Policy p : policyList) {
+            if (p.getOwner().equals(expectedModel.getFilteredContactList().get(0))) {
+                policiesToBeUpdated.add(new Pair<>(p, newPolicyWtihNewOwner(p, editedContact)));
+            }
+        }
+        for (Pair<Policy, Policy> pair : policiesToBeUpdated) {
+            expectedModel.setPolicy(pair.getKey(), pair.getValue());
+        }
+
         expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
 
         assertCommandSuccess(editContactCommand, model, expectedMessage, expectedModel);
@@ -95,6 +123,19 @@ public class EditContactCommandTest {
         String expectedMessage = String.format(EditContactCommand.MESSAGE_EDIT_CONTACT_SUCCESS, editedContact);
 
         Model expectedModel = new ModelManager(new Siasa(model.getSiasa()), new UserPrefs());
+
+        // Update contact policies
+        List<Policy> policyList = expectedModel.getFilteredPolicyList();
+        ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
+        for (Policy p : policyList) {
+            if (p.getOwner().equals(expectedModel.getFilteredContactList().get(0))) {
+                policiesToBeUpdated.add(new Pair<>(p, newPolicyWtihNewOwner(p, editedContact)));
+            }
+        }
+        for (Pair<Policy, Policy> pair : policiesToBeUpdated) {
+            expectedModel.setPolicy(pair.getKey(), pair.getValue());
+        }
+
         expectedModel.setContact(model.getFilteredContactList().get(0), editedContact);
 
         assertCommandSuccess(editContactCommand, model, expectedMessage, expectedModel);
