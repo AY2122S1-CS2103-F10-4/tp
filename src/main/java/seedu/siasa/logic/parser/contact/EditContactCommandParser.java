@@ -48,7 +48,7 @@ public class EditContactCommandParser implements Parser<EditContactCommand> {
                     EditContactCommand.MESSAGE_USAGE), pe);
         }
 
-        EditContactDescriptor editContactDescriptor = new EditContactCommand.EditContactDescriptor();
+        EditContactDescriptor editContactDescriptor = new EditContactDescriptor();
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             editContactDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
         }

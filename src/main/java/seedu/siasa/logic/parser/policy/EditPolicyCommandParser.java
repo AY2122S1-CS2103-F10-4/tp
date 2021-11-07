@@ -16,6 +16,7 @@ import java.util.Set;
 
 import seedu.siasa.commons.core.index.Index;
 import seedu.siasa.logic.commands.policy.EditPolicyCommand;
+import seedu.siasa.logic.commands.policy.EditPolicyCommand.EditPolicyDescriptor;
 import seedu.siasa.logic.parser.ArgumentMultimap;
 import seedu.siasa.logic.parser.ArgumentTokenizer;
 import seedu.siasa.logic.parser.Parser;
@@ -54,7 +55,7 @@ public class EditPolicyCommandParser implements Parser<EditPolicyCommand> {
                     EditPolicyCommand.MESSAGE_USAGE), pe);
         }
 
-        EditPolicyCommand.EditPolicyDescriptor editPolicyDescriptor = new EditPolicyCommand.EditPolicyDescriptor();
+        EditPolicyDescriptor editPolicyDescriptor = new EditPolicyDescriptor();
         if (argMultimap.getValue(PREFIX_TITLE).isPresent()) {
             editPolicyDescriptor.setTitle(ParserUtil.parseTitle(
                     argMultimap.getValue(PREFIX_TITLE).get()));

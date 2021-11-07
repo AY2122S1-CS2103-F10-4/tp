@@ -7,13 +7,16 @@ import static seedu.siasa.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.siasa.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.siasa.model.Model.PREDICATE_SHOW_ALL_CONTACTS;
+import static seedu.siasa.model.Model.PREDICATE_SHOW_ALL_POLICIES;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javafx.util.Pair;
 import seedu.siasa.commons.core.Messages;
 import seedu.siasa.commons.core.index.Index;
 import seedu.siasa.commons.util.CollectionUtil;
@@ -26,6 +29,8 @@ import seedu.siasa.model.contact.Contact;
 import seedu.siasa.model.contact.Email;
 import seedu.siasa.model.contact.Name;
 import seedu.siasa.model.contact.Phone;
+import seedu.siasa.model.policy.Policy;
+import seedu.siasa.model.policy.PolicyIsOwnedByPredicate;
 import seedu.siasa.model.tag.Tag;
 
 /**
@@ -72,6 +77,7 @@ public class EditContactCommand extends Command {
         requireNonNull(model);
         List<Contact> lastShownList = model.getFilteredContactList();
 
+        // Check for validity of provided index
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
         }
@@ -79,13 +85,40 @@ public class EditContactCommand extends Command {
         Contact contactToEdit = lastShownList.get(index.getZeroBased());
         Contact editedContact = createEditedContact(contactToEdit, editContactDescriptor);
 
+        // Check if contact is edited to be a duplicate contact
         if (!contactToEdit.isSameContact(editedContact) && model.hasContact(editedContact)) {
             throw new CommandException(MESSAGE_DUPLICATE_CONTACT);
         }
 
+        // Update all the associated policies
+        ArrayList<Pair<Policy, Policy>> policiesToBeUpdated = new ArrayList<>();
+        model.updateFilteredPolicyList(new PolicyIsOwnedByPredicate(contactToEdit));
+        List<Policy> contactPolicies = model.getFilteredPolicyList();
+
+        // Create list of policies to be updated
+        for (Policy policy : contactPolicies) {
+            policiesToBeUpdated.add(new Pair<>(policy, newPolicyWtihNewOwner(policy, editedContact)));
+        }
+
+        // Update all policies in the list
+        for (Pair<Policy, Policy> pair : policiesToBeUpdated) {
+            model.setPolicy(pair.getKey(), pair.getValue());
+        }
+
         model.setContact(contactToEdit, editedContact);
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        model.updateFilteredPolicyList(PREDICATE_SHOW_ALL_POLICIES);
         return new CommandResult(String.format(MESSAGE_EDIT_CONTACT_SUCCESS, editedContact));
+    }
+
+    private static Policy newPolicyWtihNewOwner(Policy policy, Contact owner) {
+        return new Policy(
+                policy.getTitle(),
+                policy.getPaymentStructure(),
+                policy.getCoverageExpiryDate().orElse(null),
+                policy.getCommission(),
+                owner,
+                policy.getTags());
     }
 
     /**
